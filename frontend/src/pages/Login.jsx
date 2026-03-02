@@ -1,11 +1,13 @@
 import { User, Lock, Mail, Eye, EyeClosed, Loader2, TriangleAlert } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { login } from '../api/endpoint'
 import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
 
 const Login = () => {
     const navigate = useNavigate()
+    const {setIsLoggenIn} = useContext(AuthContext)
     const [seePass, setSeepass] = useState(false)
     const [loading, setLoading] = useState(false)
     const [formData, setFormdata] = useState({
@@ -81,6 +83,7 @@ const Login = () => {
                     password: ''
 
                 })
+                setIsLoggenIn(true)
                 setTimeout(()=>{
                     navigate('/dashboard')
                 }, 2000)

@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast'
 import Login from './pages/Login'
 import Categories from './pages/Categories'
 import AllLinks from './pages/AllLinks'
+import Protected from './Protected/Protected'
 
 const App = () => {
   return (
@@ -15,11 +16,11 @@ const App = () => {
       />
       <Routes>
         <Route path='/' element={<LandingPage />} />
-        <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/categories' element={<Categories />} />
-        <Route path='/links' element={<AllLinks />} />
+        <Route path='/dashboard' element={<Protected><Dashboard /></Protected>} />
+        <Route path='/categories' element={<Protected><Categories /></Protected>} />
+        <Route path='/links' element={<Protected><AllLinks /></Protected>} />
       </Routes>
     </Router>
   )
