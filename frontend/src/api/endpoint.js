@@ -28,3 +28,18 @@ export const logout = async()=>{
     const respose = await api.post('api/logout/')
     return respose.data
 }
+
+export const createCategory = async(payload)=>{
+    const respose = await api.post('api/create-category/', payload)
+    return respose.data
+}
+
+export const getCategories = async()=>{
+    const respose = await api.get('api/get-category/')
+    return respose.data
+}
+
+export const deleteCategory = async(id)=>{
+    const respose = await api.delete(`api/delete-category/${id}/`)
+    return respose.data
+}

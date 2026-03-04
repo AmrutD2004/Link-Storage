@@ -23,3 +23,13 @@ class UserRegister(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+    
+class CategoryCreation(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'link_category', 'category_color', 'created_at']
+        
+class GetUserCategory(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['user', 'id', 'link_category', 'category_color', 'created_at']

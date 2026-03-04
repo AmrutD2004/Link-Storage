@@ -44,7 +44,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             return Response({'success' : False, 'message' : 'Invalid Credentials'}, status=400)
 
 @api_view(['POST'])       
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def logout(request):
     try:
         res = Response()
@@ -75,3 +75,46 @@ def is_authenticated(request):
         'email' : user.email,
         'created_at' : user.created_at,
     })
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_category(request):
+    serializer = CategoryCreation(data = request.data)
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response({
+            'success': True,
+            'data': serializer.data
+        })
+    return Response({
+        'success': False,
+        'errors': serializer.errors
+    })
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_category(request):
+    categories = Category.objects.filter(user = request.user)
+    
+    serializer = GetUserCategory(categories, many=True)
+    return Response({
+            'success': True,
+            'data': serializer.data
+        })
+    
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_category(request, category_id):
+    try:
+        category = Category.objects.get(id=category_id, user=request.user)
+        category.delete()
+        return Response({
+                'success': True,
+                'message': 'Category Deleted'
+            })
+    except Category.DoesNotExist:
+        return Response({
+                'success': False,
+                'message': "Category Doesn't exists"
+            }, status = 404)
+    
