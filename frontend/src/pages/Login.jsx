@@ -7,7 +7,7 @@ import { AuthContext } from '../context/AuthContext'
 
 const Login = () => {
     const navigate = useNavigate()
-    const {setIsLoggenIn} = useContext(AuthContext)
+    const {setIsLoggedIn} = useContext(AuthContext)
     const [seePass, setSeepass] = useState(false)
     const [loading, setLoading] = useState(false)
     const [formData, setFormdata] = useState({
@@ -83,7 +83,7 @@ const Login = () => {
                     password: ''
 
                 })
-                setIsLoggenIn(true)
+                setIsLoggedIn(true)
                 setTimeout(()=>{
                     navigate('/dashboard')
                 }, 2000)

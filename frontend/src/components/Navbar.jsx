@@ -1,8 +1,9 @@
 import { Menu } from 'lucide-react'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
+    const navigate = useNavigate()
 
     const [menu, setMenu] = useState(false)
   return (
@@ -12,10 +13,10 @@ const Navbar = () => {
             <div className='flex items-center justify-between w-full'>
                 <Link className='text-[#0B3A66] text-2xl font-medium tracking-tight'>Curato</Link>
                 <div className='hidden lg:flex lg:items-center lg:justify-end lg:gap-3'>
-                    <button className='px-3 py-2 text-balance font-medium text-[#0B3A66] tracking-tighter rounded-sm cursor-pointer hover:shadow-xs shadow-[#fffff9] transition-all duration-300 border border-[#E6EEF4] text-sm'>
+                    <button onClick={()=> navigate('/login')} className='px-3 py-2 text-balance font-medium text-[#0B3A66] tracking-tighter rounded-sm cursor-pointer hover:shadow-xs shadow-[#fffff9] transition-all duration-300 border border-[#E6EEF4] text-sm'>
                         Log In
                     </button>
-                    <button className='px-3 py-2 bg-[#0B3A66] text-sm font-medium text-white tracking-tighter rounded-sm cursor-pointer hover:shadow-md shadow-[#0B3A66] transition-all duration-300 hover:scale-102 hover:bg-[#194670]'>
+                    <button onClick={()=> navigate('/signup')} className='px-3 py-2 bg-[#0B3A66] text-sm font-medium text-white tracking-tighter rounded-sm cursor-pointer hover:shadow-md shadow-[#0B3A66] transition-all duration-300 hover:scale-102 hover:bg-[#194670]'>
                          Get started free
                     </button>
                 </div>

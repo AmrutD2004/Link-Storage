@@ -4,19 +4,35 @@ import { is_auth } from "../api/endpoint";
 
 export const AuthContext = createContext()
 
-export const AuthContextProvider = (props)=>{
+export const AuthContextProvider = (props) => {
 
     const [userData, setUserData] = useState(null)
-    const [isLoggedIn, setIsLoggenIn] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [loading, setLoading] = useState(true)
 
-    const fetchData = useCallback(async()=>{
-        const data = await is_auth()
-        setIsLoggenIn(true)
-        setUserData(data)
+    const fetchData = async () => {
+        try {
+            const data = await is_auth()
+
+            if (data.success) {
+                setUserData(data)
+                setIsLoggedIn(true)
+            } else {
+                setIsLoggedIn(false)
+            }
+
+        } catch {
+            setIsLoggedIn(false)
+        } finally {
+            setLoading(false)
+        }
+    }
+    useEffect(() => {
+        fetchData()
     }, [])
 
     const value = {
-        userData, fetchData, isLoggedIn, setIsLoggenIn
+        userData, fetchData, isLoggedIn, setIsLoggedIn, loading
     }
 
     return (

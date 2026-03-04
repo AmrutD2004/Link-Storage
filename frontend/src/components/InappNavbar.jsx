@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 const InappNavbar = () => {
   const navigate = useNavigate()
   const [toggleMenu, setToggelMenu] = useState(false)
-  const { userData, fetchData, isLoggedIn, setIsLoggenIn } = useContext(AuthContext)
+  const { userData, fetchData, isLoggedIn, setIsLoggedIn } = useContext(AuthContext)
 
   useEffect(()=>{
     fetchData()
@@ -28,7 +28,7 @@ const InappNavbar = () => {
           boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
         },
       })
-      setIsLoggenIn(false)
+      setIsLoggedIn(false)
       setTimeout(()=>{
         navigate('/login')
       }, 2000)

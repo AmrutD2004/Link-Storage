@@ -8,6 +8,7 @@ import Login from './pages/Login'
 import Categories from './pages/Categories'
 import AllLinks from './pages/AllLinks'
 import Protected from './Protected/Protected'
+import { CategoryContextProvider } from './context/CategoryContext'
 
 const App = () => {
   return (
@@ -18,8 +19,8 @@ const App = () => {
         <Route path='/' element={<LandingPage />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/dashboard' element={<Protected><Dashboard /></Protected>} />
-        <Route path='/categories' element={<Protected><Categories /></Protected>} />
+        <Route path='/dashboard' element={<Protected><CategoryContextProvider><Dashboard /></CategoryContextProvider></Protected>} />
+        <Route path='/categories' element={<Protected><CategoryContextProvider><Categories /></CategoryContextProvider></Protected>} />
         <Route path='/links' element={<Protected><AllLinks /></Protected>} />
       </Routes>
     </Router>
