@@ -9,6 +9,7 @@ import Categories from './pages/Categories'
 import AllLinks from './pages/AllLinks'
 import Protected from './Protected/Protected'
 import { CategoryContextProvider } from './context/CategoryContext'
+import LinkDetails from './pages/LinkDetails'
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path='/dashboard' element={<Protected><CategoryContextProvider><Dashboard /></CategoryContextProvider></Protected>} />
         <Route path='/categories' element={<Protected><CategoryContextProvider><Categories /></CategoryContextProvider></Protected>} />
         <Route path='/links' element={<Protected><AllLinks /></Protected>} />
+        <Route path='/link/:id' element={<Protected><CategoryContextProvider><LinkDetails /></CategoryContextProvider></Protected>} />
       </Routes>
     </Router>
   )

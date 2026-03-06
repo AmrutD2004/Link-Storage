@@ -1,12 +1,52 @@
-import { Link, Plus, X, XIcon } from 'lucide-react'
-import React, { useState } from 'react'
+import { Link, Loader2, Plus, X, XIcon } from 'lucide-react'
+import React, { useContext, useState } from 'react'
+import { CategoryContext } from '../../context/CategoryContext'
+import { createLink, fetchURLTitle } from '../../api/endpoint'
+import toast from 'react-hot-toast'
 
 const AddLinkModal = ({ onClose }) => {
 
     const [tags, setTags] = useState([])
+    const [loading, setLoading] = useState(false)
+    const{fetchCategories, categories, links, fetchLinks} = useContext(CategoryContext)
+    const [noTitle, setNoTitle] = useState(false)
+
+    const [linkTitle, setLinkTitle] = useState('')
+    const [formData, setFormData] = useState({
+        category : '',
+        purpose : ''
+    })
+    const [url, setUrl] = useState('')
+    const handleChange = (e)=>{
+        const {name, value} = e.target
+        setFormData(prev=> ({...prev, [name]:value}))
+    }
+
+    const handleURlChange = async(e)=>{
+        const value = e.target.value
+        setUrl(value)
+        if (value.startsWith('http://') || value.startsWith('https://')){
+            try{
+                const data = await fetchURLTitle(value)
+                if(data.success){
+                    console.log(data)
+                    if(data.title == null){
+                        setNoTitle(true)
+                    }else{
+                        setLinkTitle(data.title)
+                    }
+                    
+                }
+            }catch(error){
+                console.log(error)
+            }
+        }
+    }
 
     const handlekeydown = (e) => {
+
         if (e.key !== 'Enter') return
+        e.preventDefault();
         const value = e.target.value
         if (!value.trim()) return
         setTags([...tags, value])
@@ -16,26 +56,72 @@ const AddLinkModal = ({ onClose }) => {
     const removeTags = (id) => {
         setTags(tags.filter((el, i) => i !== id))
     }
+
+
+    const handleSubmit = async(e)=>{
+        e.preventDefault();
+        try{
+            setLoading(true)
+            const payload = {
+                actual_link : url,
+                link_title: linkTitle,
+                link_purpose : formData.purpose || null,
+                link_tags : tags,
+                category : formData.category,
+            }
+            const data = await createLink(payload)
+            if(data.success){
+                toast.success('Link Added Successfully', {
+                    style: {
+                        backgroundColor: '#ECFDF5',
+                        color: '#065F46',
+                        border: '1px solid #A7F3D0',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        padding: '10px',
+                        boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
+                    },
+                })
+                setFormData({
+                    purpose : '',
+                    category : ''
+                })
+                setTags([])
+                setLinkTitle('')
+                setUrl('')
+                setTimeout(()=>{
+                    fetchLinks()
+                    onClose()
+                }, 2000)
+            }
+        }catch(error){
+            console.log(error)
+            setLoading(false)
+        }finally{
+            setLoading(false)
+        }
+    }
     return (
         <div className='fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs'>
             <div className='max-w-4xl mx-auto z-50'>
-                <div className='w-125 bg-white px-5 py-3 rounded-lg border border-neutral-300'>
+                <form onSubmit={handleSubmit} className='w-125 bg-white px-5 py-3 rounded-lg border border-neutral-300'>
                     <div className='flex items-center justify-between w-full'>
                         <h1 className='text-balance font-semibold text-[#0B3A66] tracking-tight'>Add new link</h1>
-                        <button onClick={onClose} on className='p-1.5 rounded-lg bg-gray-100 hover:text-red-500 transition-colors cursor-pointer'><X size={18} /></button>
+                        <button onClick={onClose} className='p-1.5 rounded-lg bg-gray-100 hover:text-red-500 transition-colors cursor-pointer'><X size={18} /></button>
                     </div>
                     <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 relative'>
                         <label className="text-sm text-[#0B3A66] font-medium">URL</label>
                         <Link size={16} className='absolute top-8 left-2.5 text-neutral-500' />
-                        <input type="text" className='w-full px-8 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='Paste a URL - title fetched automatically' />
+                        <input value={url} onChange={handleURlChange} type="text" className='w-full px-8 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='Paste a URL - title fetched automatically' />
                     </div>
-                    <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
+                    <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 relative'>
                         <label className="text-sm text-[#0B3A66] font-medium">Title</label>
-                        <input type="text" className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='Link Title' />
+                        <input value={linkTitle} onChange={(e) => {setLinkTitle(e.target.value), setNoTitle(false) }} type="text" className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='Link Title' />
+                        {noTitle && <span className='absolute -bottom-5 left-2 text-xs text-red-500'>No title found</span>}
                     </div>
                     <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
                         <label className="text-sm text-[#0B3A66] font-medium">Purpose / Note (optional)</label>
-                        <textarea type="text" className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='What is this link for? Why did you save it?' />
+                        <textarea name='purpose' onChange={handleChange} value={formData.purpose} type="text" className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='What is this link for? Why did you save it?' />
                     </div>
                     <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
                         <label className="text-sm text-[#0B3A66] font-medium">Tags</label>
@@ -53,14 +139,22 @@ const AddLinkModal = ({ onClose }) => {
                     </div>
                     <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
                         <label className="text-sm text-[#0B3A66] font-medium">Category</label>
-                        <select className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg' name="" id="">
-                            <option className=''>Select a category</option>
+                        <select onChange={handleChange} className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg' name="category" value={formData.category} >
+                            <option  className=''>Select a category</option>
+                            {categories.map((cat)=>(
+                                <option value={cat.id}>{cat.link_category}</option>
+                            ))}
                         </select>
                     </div>
                     <div className='flex items-end justify-end w-full my-5'>
-                        <button className='bg-[#0B3A66] text-white flex items-center mt-4 px-3 py-1.5 text-sm gap-1 rounded-lg shadow hover:scale-102 transition-all duration-200 cursor-pointer'><Plus size={18} />Save Link</button>
+                        {loading ? (
+                            <button className='bg-[#0B3A66] text-white flex items-center mt-4 px-3 py-1.5 text-sm gap-1 rounded-lg shadow hover:scale-102 transition-all duration-200 cursor-pointer'><Loader2 className='animate-spin' size={18} />Saving Link...</button>
+                        ) : (
+                            <button className='bg-[#0B3A66] text-white flex items-center mt-4 px-3 py-1.5 text-sm gap-1 rounded-lg shadow hover:scale-102 transition-all duration-200 cursor-pointer'><Plus size={18} />Save Link</button>
+                        )}
+                        
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     )

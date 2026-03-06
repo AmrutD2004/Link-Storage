@@ -26,7 +26,7 @@ class linkData(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='linkCategory')
     actual_link = models.CharField(max_length=500)
     link_title = models.CharField(max_length=100)
-    link_purpose = models.CharField(max_length=500)
+    link_purpose = models.CharField(max_length=500, null=True)
     link_tags = models.JSONField(default=list, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     

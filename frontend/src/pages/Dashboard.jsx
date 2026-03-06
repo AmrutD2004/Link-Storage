@@ -4,6 +4,8 @@ import dayjs from 'dayjs'
 import { Plus } from 'lucide-react'
 import AddLinkModal from '../components/Modal/AddLinkModal'
 import { AuthContext } from '../context/AuthContext'
+import { CategoryContext } from '../context/CategoryContext'
+import Links from '../components/Links'
 
 const Dashboard = () => {
     const [openModal, setOpenmodal] = useState(false)
@@ -14,7 +16,10 @@ const Dashboard = () => {
         year: "numeric",
     })
 
-    const {userData} = useContext(AuthContext)
+    const {categories, links, fetchLinks} = useContext(CategoryContext)
+
+    const tags = links.map(link=> link.link_tags)
+    const uniqueTags = [...new Set(tags.flat())]
     
     return (
         <>
@@ -31,21 +36,21 @@ const Dashboard = () => {
                     <div className='flex flex-col items-start justify-start rounded-lg bg-white shadow-sm'>
                         <div className='px-5 py-6 flex flex-col gap-1'>
                             <h1 className='text-xs uppercase text-neutral-500 '>Total links</h1>
-                            <span className='text-3xl text-[#0B3A66]'>241</span>
+                            <span className='text-3xl text-[#0B3A66]'>{links.length}</span>
                         </div>
                         
                     </div>
                     <div className='flex flex-col items-start justify-start rounded-lg bg-white shadow-sm'>
                         <div className='px-5 py-6 flex flex-col gap-1'>
                             <h1 className='text-xs uppercase text-neutral-500 '>Categories</h1>
-                            <span className='text-3xl text-[#0B3A66]'>241</span>
+                            <span className='text-3xl text-[#0B3A66]'>{categories.length}</span>
                         </div>
                         
                     </div>
                     <div className='flex flex-col items-start justify-start rounded-lg  bg-white shadow-sm'>
                         <div className='px-5 py-6 flex flex-col gap-1'>
                             <h1 className='text-xs uppercase text-neutral-500 '>Tags</h1>
-                            <span className='text-3xl text-[#0B3A66]'>241</span>
+                            <span className='text-3xl text-[#0B3A66]'>{uniqueTags.length}</span>
                         </div>
                         
                     </div>
@@ -57,6 +62,7 @@ const Dashboard = () => {
                         
                     </div>
                 </div>
+                <Links links={links} fetchLinks={fetchLinks} categories={categories}/>
             </div>
         </Layout>
         {openModal && (<AddLinkModal onClose={()=> setOpenmodal(false)}/>)}

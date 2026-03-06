@@ -43,3 +43,27 @@ export const deleteCategory = async(id)=>{
     const respose = await api.delete(`api/delete-category/${id}/`)
     return respose.data
 }
+
+export const fetchURLTitle = async(url)=>{
+    const respose = await api.post('api/fetch-link-title/', {url})
+    return respose.data
+}
+
+export const createLink = async(payload)=>{
+    const respose = await api.post('api/create-link/', payload)
+    return respose.data
+}
+
+export const getlinks = async()=>{
+    const respose = await api.get('api/get-links/')
+    return respose.data
+}
+export const deleteLink = async(id)=>{
+    const respose = await api.delete(`api/delete-link/${id}/`)
+    return respose.data
+}
+
+export const getlinkDetails = async(id)=>{
+    const respose = await api.get(`api/get-link-id/${id}/`)
+    return respose.data
+}
