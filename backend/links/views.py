@@ -1,6 +1,8 @@
 from rest_framework.decorators import api_view, parser_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+import requests
+from bs4 import BeautifulSoup
 from rest_framework import status
 from .serializers import *
 from .models import *
@@ -118,3 +120,76 @@ def delete_category(request, category_id):
                 'message': "Category Doesn't exists"
             }, status = 404)
     
+
+@api_view(['POST'])
+def fetch_link_title(request):
+    url = request.data.get('url')
+    
+    try:
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        title = soup.title.string if soup.title else "No title found"
+        
+        return Response({
+            "success" : True,
+            "title" : title
+        })
+    except Exception as e:
+        return Response({
+            "success": False,
+            "message": str(e)
+        })
+        
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_link(request):
+    serializer = LinkCreation(data = request.data)
+    if serializer.is_valid():
+        serializer.save(user = request.user)
+        return Response({
+            'success' : True,
+            'data' : serializer.data
+        })
+    return Response({
+        'success' : False,
+        'error' : serializer.errors
+    })
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_links(request):
+    links = linkData.objects.filter(user = request.user)
+    
+    serializer = GetUserLinksSerializer(links, many=True)
+    return Response({
+            'success': True,
+            'data': serializer.data
+        })
+        
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_link(request, link_id):
+    try:
+        link = linkData.objects.get(id=link_id, user=request.user)
+        link.delete()
+        return Response({
+                'success': True,
+                'message': 'Link Deleted'
+            })
+    except linkData.DoesNotExist:
+        return Response({
+                'success': False,
+                'message': "Link Doesn't exists"
+            }, status = 404)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_link(request, link_id):
+    link = linkData.objects.get(id=link_id, user=request.user)
+    serializer = GetUserLinksSerializer(link, many=False)
+    
+    return Response({
+            'success': True,
+            'data': serializer.data
+            })
