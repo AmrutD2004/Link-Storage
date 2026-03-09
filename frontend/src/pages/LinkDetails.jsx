@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 import toast from 'react-hot-toast'
 import ShareModal from '../components/Modal/ShareModal'
 import { CategoryContext } from '../context/CategoryContext'
+import EditLinkModal from '../components/Modal/EditLinkModal'
 
 
 const LinkDetails = () => {
@@ -14,6 +15,7 @@ const LinkDetails = () => {
     const {fetchLinks} = useContext(CategoryContext)
     const [linkDetails, setLinkDetails] = useState(null)
     const [open, setOpen] = useState(false)
+    const[openEditModal, setOpenEditModal] = useState(false)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
@@ -119,7 +121,7 @@ const LinkDetails = () => {
                                     <SquareArrowOutUpRight size={11} />
                                     Open link
                                 </Link>
-                                <button className='flex items-center gap-1.5 text-xs font-medium text-neutral-600 hover:text-[#0B3A66] hover:bg-[#EAF2FB] border border-[#E6EEF4] px-3 py-1.5 rounded-lg transition-all duration-150'>
+                                <button onClick={() => setOpenEditModal(true)} className='flex items-center gap-1.5 text-xs font-medium text-neutral-600 hover:text-[#0B3A66] hover:bg-[#EAF2FB] border border-[#E6EEF4] px-3 py-1.5 rounded-lg transition-all duration-150'>
                                     <Pencil size={11} />
                                     Edit
                                 </button>
@@ -209,6 +211,7 @@ const LinkDetails = () => {
             </div>
         </Layout>
         {open && (<ShareModal onClose={() =>setOpen(false)} link={link}/>)}
+            {openEditModal && (<EditLinkModal onClose={() =>setOpenEditModal(false)} link={linkDetails} linkId={linkDetails.id}/>)}
         </>
     )
 }

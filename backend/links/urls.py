@@ -15,4 +15,5 @@ urlpatterns = [
      path('get-links/', get_user_links, name='get_user_links'),
      path('delete-link/<int:link_id>/', delete_link, name='delete_link'),
      path('get-link-id/<int:link_id>/', get_link, name='get_link'),
+     path('edit-link/<int:link_id>/', edit_link, name='edit_link')
 ]
