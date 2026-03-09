@@ -14,7 +14,7 @@ const Sidebar = () => {
   ];
 
   const accountMenu = [
-    { title: "Settings", icon: <Settings size={18} />, path: "/settings" },
+    { title: "Settings", icon: <Settings size={18} />, path: "/profile" },
   ];
 
   return (

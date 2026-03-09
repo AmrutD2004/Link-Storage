@@ -71,10 +71,12 @@ def userRegister(request):
 @permission_classes([IsAuthenticated])
 def is_authenticated(request):
     user = request.user
+    avatar_url = user.user_avatar.url if user.user_avatar else None
     return Response({
         'success' : True,
         'username' : user.username,
         'email' : user.email,
+        'avatar' : avatar_url,
         'created_at' : user.created_at,
     })
     
@@ -220,5 +222,90 @@ def edit_link(request, link_id):
         return Response({
             "success": False,
             "message": "Link doesn't exist"
+        }, status=404)
+        
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_user(request):
+    try:
+        user = request.user
+
+        serializer = UpdateUserInfoSerializer(user, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({
+                "success": True,
+                "message": "Profile updated successfully",
+                "data": serializer.data
+            })
+
+        return Response({
+            "success": False,
+            "errors": serializer.errors
+        }, status=400)
+
+    except Users.DoesNotExist:
+        return Response({
+            "success": False,
+            "message": "User doesn't exist"
+        }, status=404)
+        
+        
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_user_avatar(request):
+    try:
+        user = request.user
+
+        serializer = UpdateUserAvatar(user, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({
+                "success": True,
+                "message": "Avatar updated successfully",
+                "data": serializer.data
+            })
+
+        return Response({
+            "success": False,
+            "errors": serializer.errors
+        }, status=400)
+
+    except Users.DoesNotExist:
+        return Response({
+            "success": False,
+            "message": "User doesn't exist"
+        }, status=404)
+        
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_password(request):
+    try:
+        serializer = UpdatePasswordSerializer(data = request.data, context = {'request' : request})
+
+
+        if serializer.is_valid():
+            user = request.user
+            user.set_password(serializer.validated_data['newPassword'])
+            user.save()
+
+            return Response({
+                "success": True,
+                "message": "Password updated successfully",
+            })
+
+        return Response({
+            "success": False,
+            "errors": serializer.errors
+        }, status=400)
+
+    except Users.DoesNotExist:
+        return Response({
+            "success": False,
+            "message": "User doesn't exist"
         }, status=404)
     

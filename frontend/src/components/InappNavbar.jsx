@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 const InappNavbar = () => {
   const navigate = useNavigate()
   const [toggleMenu, setToggelMenu] = useState(false)
+  const basUrl = import.meta.env.VITE_BASE_URL
   const { userData, fetchData, isLoggedIn, setIsLoggedIn } = useContext(AuthContext)
 
   useEffect(()=>{
@@ -57,9 +58,14 @@ const InappNavbar = () => {
           </button>
 
           <div className='flex items-center justify-start gap-3 rounded-full'>
-            <span className='bg-[#EBF5FF] px-4 py-2 text-base text-[#0B3A66] uppercase' style={{
+            {userData.avatar ? (
+              <img className="w-12 h-12 rounded-full object-cover" src={`${basUrl}${userData.avatar}`}/>
+            ) : (
+              <span className='bg-[#EBF5FF] px-4 py-2 text-base text-[#0B3A66] uppercase' style={{
               clipPath: "circle(50% at 50% 50%)"
             }}>{userData?.username?.[0]}</span>
+            )}
+            
             <div className='relative flex items-center'>
               <button onClick={() => setToggelMenu(!toggleMenu)} className='flex items-start justify-start leading-tight gap-1 px-2 py-2 hover:bg-[#EBF5FF]  transition-all duration-300 cursor-pointer rounded-lg'>
                 <span className='text-sm font-medium mt-1'>{userData?.username}</span>
