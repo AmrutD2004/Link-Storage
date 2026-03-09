@@ -6,7 +6,12 @@ from django.contrib.auth.models import AbstractUser
 class Users(AbstractUser):
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=100, unique=True)
-    password = models.CharField(max_length=50)
+    password = models.CharField(max_length=100)
+    user_avatar = models.ImageField(
+        upload_to="user/avatar/",
+        blank=True,
+        null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
