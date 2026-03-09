@@ -46,3 +46,10 @@ class GetUserLinksSerializer(serializers.ModelSerializer):
     class Meta:
         model = linkData
         fields = ['id', 'user', 'category', 'category_name', 'actual_link', 'link_title', 'link_purpose', 'link_tags', 'created_at']
+        
+class EditLinkSerializer(serializers.ModelSerializer):
+    category_name = serializers.CharField(source="category.link_category", read_only= True)
+    class Meta:
+        
+        model = linkData
+        fields = ['id', 'category', 'category_name', 'actual_link', 'link_title', 'link_purpose', 'link_tags', 'created_at']

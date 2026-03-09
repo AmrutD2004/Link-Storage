@@ -193,3 +193,32 @@ def get_link(request, link_id):
             'success': True,
             'data': serializer.data
             })
+    
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def edit_link(request, link_id):
+    try:
+        link = linkData.objects.get(id=link_id, user=request.user)
+
+        serializer = EditLinkSerializer(link, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({
+                "success": True,
+                "message": "Link updated successfully",
+                "data": serializer.data
+            })
+
+        return Response({
+            "success": False,
+            "errors": serializer.errors
+        }, status=400)
+
+    except linkData.DoesNotExist:
+        return Response({
+            "success": False,
+            "message": "Link doesn't exist"
+        }, status=404)
+    

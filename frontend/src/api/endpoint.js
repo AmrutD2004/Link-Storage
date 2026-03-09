@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL : 'http://127.0.0.1:8000/',
+    baseURL : 'http://127.0.0.1:8080/',
     withCredentials : true
 })
 
@@ -66,4 +66,9 @@ export const deleteLink = async(id)=>{
 export const getlinkDetails = async(id)=>{
     const respose = await api.get(`api/get-link-id/${id}/`)
     return respose.data
+}
+
+export const editLink = async(id, payload)=>{
+    const response = await api.put(`api/edit-link/${id}/`, payload)
+    return response.data
 }
