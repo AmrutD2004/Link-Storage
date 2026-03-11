@@ -9,9 +9,9 @@ const InappNavbar = () => {
   const navigate = useNavigate()
   const [toggleMenu, setToggelMenu] = useState(false)
   const basUrl = import.meta.env.VITE_BASE_URL
-  const { userData, fetchData, isLoggedIn, setIsLoggedIn } = useContext(AuthContext)
+  const { userData, fetchData, isLoggedIn, setIsLoggedIn, loading } = useContext(AuthContext)
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData()
   }, [isLoggedIn])
 
@@ -22,18 +22,47 @@ const InappNavbar = () => {
         style: {
           backgroundColor: '#ECFDF5',
           color: '#065F46',
-          border: '1px solid #A7F3D0',
           fontSize: '14px',
           fontWeight: '500',
-          padding: '10px',
+          padding: '10px 16px',
           boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
         },
+        icon: (
+          <div style={{
+            backgroundColor: '#059669',
+            borderRadius: '50%',
+            width: '20px',
+            height: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        ),
+        duration: 3000,
       })
       setIsLoggedIn(false)
-      setTimeout(()=>{
+      setTimeout(() => {
         navigate('/login')
       }, 2000)
     }
+  }
+  if (loading) {
+    return (
+      <div className='max-w-7xl mx-auto'>
+        <div className='min-h-screen flex items-center justify-center'>
+          <h1 className='flex items-center gap-1'><Loader2 className='animate-spin' />Loading Dashboard please wait...</h1>
+        </div>
+      </div>
+    )
   }
   return (
     <nav className="sticky top-0 h-16 border-b border-neutral-200 bg-white/70 backdrop-blur-md flex items-center px-6">
@@ -52,20 +81,20 @@ const InappNavbar = () => {
         </div>
         <div className='flex items-center justify-center gap-5 text-[#272323]'>
 
-          <button className="relative cursor-pointer">
+          {/* <button className="relative cursor-pointer">
             <Bell size={18} />
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-orange-500 rounded-full"></span>
-          </button>
+          </button> */}
 
           <div className='flex items-center justify-start gap-3 rounded-full'>
-            {userData.avatar ? (
-              <img className="w-12 h-12 rounded-full object-cover" src={`${basUrl}${userData.avatar}`}/>
+            {userData?.avatar ? (
+              <img className="w-12 h-12 rounded-full object-cover" src={`${basUrl}${userData?.avatar}`} />
             ) : (
               <span className='bg-[#EBF5FF] px-4 py-2 text-base text-[#0B3A66] uppercase' style={{
-              clipPath: "circle(50% at 50% 50%)"
-            }}>{userData?.username?.[0]}</span>
+                clipPath: "circle(50% at 50% 50%)"
+              }}>{userData?.username?.[0]}</span>
             )}
-            
+
             <div className='relative flex items-center'>
               <button onClick={() => setToggelMenu(!toggleMenu)} className='flex items-start justify-start leading-tight gap-1 px-2 py-2 hover:bg-[#EBF5FF]  transition-all duration-300 cursor-pointer rounded-lg'>
                 <span className='text-sm font-medium mt-1'>{userData?.username}</span>

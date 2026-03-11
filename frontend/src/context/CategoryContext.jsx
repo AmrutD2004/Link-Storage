@@ -20,7 +20,6 @@ export const CategoryContextProvider = (props)=>{
         const data = await getlinks()
         if(data.success){
             setLinks(data.data)
-            console.log(data)
         }
     }
 

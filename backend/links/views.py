@@ -309,3 +309,23 @@ def update_password(request):
             "message": "User doesn't exist"
         }, status=404)
     
+    
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_user(request):
+    try:
+        user = request.user
+        user.delete()
+        res = Response()
+        res.delete_cookie('access_token', path='/', samesite='None')
+        res.delete_cookie('refresh_token', path='/', samesite='None')
+        return Response({
+            "success": True,
+            "message": "User account deleted successfully"
+        })
+    except Users.DoesNotExist:
+        return Response({
+            'success' : False,
+            "message" : 'User not exists'
+        })
+    

@@ -72,10 +72,24 @@ const Links = ({ links, fetchLinks, categories }) => {
         </div>
       </div>
       {searchedLinks.length === 0 && (
-        <div className='flex items-center justify-center mt-30'>
-          <h1 className='text-neutral-500'>No link found with category <span className='font-medium'>"{category}"</span></h1>
-        </div>
+  <div className='flex items-center justify-center mt-30'>
+    <h1 className='text-neutral-500 text-sm text-center'>
+      
+      {/* No links in database */}
+      {links.length === 0 ? (
+        <span>
+          You haven't added any links yet. Click <strong>Add Link</strong> to save your first link.
+        </span>
+      ) : (
+        <span>
+          No links found
+          {category && <span className='font-medium'> in "{category}"</span>}.
+        </span>
       )}
+
+    </h1>
+  </div>
+)}
       <div className='grid grid-cols-1 lg:grid-cols-3 py-4 gap-4'>
         {searchedLinks.map((link) => (
           <div

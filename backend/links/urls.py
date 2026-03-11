@@ -19,4 +19,5 @@ urlpatterns = [
      path('update-avatar/', update_user_avatar, name='update_user_avatar'),
      path('update-user/', update_user, name='update_user'),
      path('update-password/', update_password, name='update_password'),
+     path('user-delete/', delete_user, name='delete_user'),
 ]
