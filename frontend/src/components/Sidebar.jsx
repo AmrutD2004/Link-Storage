@@ -9,7 +9,7 @@ const Sidebar = () => {
 
   const menu = [
     { title: "Dashboard", icon: <LayoutDashboard size={18} />, path: "/dashboard" },
-    { title: "All Links", icon: <LinkIcon size={18} />, path: "/links" },
+    // { title: "All Links", icon: <LinkIcon size={18} />, path: "/links" },
     { title: "Categories", icon: <List size={18} />, path: "/categories" },
   ];
 

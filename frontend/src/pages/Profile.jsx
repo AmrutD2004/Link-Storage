@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
 import Layout from '../components/Layout/Layout'
 import { AuthContext } from '../context/AuthContext'
-import { Loader2, Save } from 'lucide-react'
-import { updateAvatar, updatePassword, updateUserInfo } from '../api/endpoint'
+import { Loader2, Save, TriangleAlert } from 'lucide-react'
+import { deleteAccount, updateAvatar, updatePassword, updateUserInfo } from '../api/endpoint'
 import toast from 'react-hot-toast'
 
 const Profile = () => {
@@ -41,16 +41,36 @@ const Profile = () => {
             if (res.success) {
                 fetchData()
                 toast.success('Avatar updated Successfully', {
-                    style: {
-                        backgroundColor: '#ECFDF5',
-                        color: '#065F46',
-                        border: '1px solid #A7F3D0',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        padding: '10px',
-                        boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
-                    },
-                })
+    style: {
+        backgroundColor: '#ECFDF5',
+        color: '#065F46',
+        fontSize: '14px',
+        fontWeight: '500',
+        padding: '10px 16px',
+        boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+    },
+    icon: (
+        <div style={{
+            backgroundColor: '#059669',
+            borderRadius: '50%',
+            width: '20px',
+            height: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+        }}>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+        </div>
+    ),
+    duration: 3000,
+})
             }
 
         } catch (error) {
@@ -70,16 +90,36 @@ const Profile = () => {
             if (data.success) {
                 fetchData()
                 toast.success('Info Updated Successfully', {
-                    style: {
-                        backgroundColor: '#ECFDF5',
-                        color: '#065F46',
-                        border: '1px solid #A7F3D0',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        padding: '10px',
-                        boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
-                    },
-                })
+    style: {
+        backgroundColor: '#ECFDF5',
+        color: '#065F46',
+        fontSize: '14px',
+        fontWeight: '500',
+        padding: '10px 16px',
+        boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+    },
+    icon: (
+        <div style={{
+            backgroundColor: '#059669',
+            borderRadius: '50%',
+            width: '20px',
+            height: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+        }}>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+        </div>
+    ),
+    duration: 3000,
+})
             }
         } catch (error) {
             console.log(error.message)
@@ -108,16 +148,36 @@ const Profile = () => {
             const data = await updatePassword(payload)
             if (data.success) {
                 toast.success('Password Updated Successfully', {
-                    style: {
-                        backgroundColor: '#ECFDF5',
-                        color: '#065F46',
-                        border: '1px solid #A7F3D0',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        padding: '10px',
-                        boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
-                    },
-                })
+    style: {
+        backgroundColor: '#ECFDF5',
+        color: '#065F46',
+        fontSize: '14px',
+        fontWeight: '500',
+        padding: '10px 16px',
+        boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+    },
+    icon: (
+        <div style={{
+            backgroundColor: '#059669',
+            borderRadius: '50%',
+            width: '20px',
+            height: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+        }}>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+        </div>
+    ),
+    duration: 3000,
+})
                 setPassword({
                     oldPassword: '',
                     newPassword: '',
@@ -129,6 +189,49 @@ const Profile = () => {
             setUpdatePassLoading(false)
         } finally {
             setUpdatePassLoading(false)
+        }
+    }
+
+    const handleDelete = async(e)=>{
+        e.preventDefault()
+        try{
+            const data = await deleteAccount()
+            if(data.success){
+                toast.success('Account Deleted Permantely', {
+    style: {
+        backgroundColor: '#ECFDF5',
+        color: '#065F46',
+        fontSize: '14px',
+        fontWeight: '500',
+        padding: '10px 16px',
+        boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+    },
+    icon: (
+        <div style={{
+            backgroundColor: '#059669',
+            borderRadius: '50%',
+            width: '20px',
+            height: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+        }}>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+        </div>
+    ),
+    duration: 3000,
+})
+                window.location.reload
+            }
+        }catch(error){
+            console.log(error.message)
         }
     }
 
@@ -215,11 +318,28 @@ const Profile = () => {
                             {notMatch && <span className='text-xs text-red-500 absolute -bottom-5'>New password and confirm password do not match.</span>}
                         </div>
                         <div className='w-full flex items-center justify-end mt-3'>
-                            {loading ? (
+                            {updatePassloading ? (
                                 <button className='px-3 py-2 font-medium rounded-lg shadow text-xs text-white bg-[#0E4A82] flex items-center gap-1'><Loader2 className='animate-spin' size={16} />Updating password...</button>
                             ) : (
                                 <button onClick={handlePasswordSubmit} className='px-3 py-2 font-medium rounded-lg shadow text-xs text-white bg-[#0B3A66] flex items-center gap-1 hover:bg-[#0E4A82] cursor-pointer transition-colors duration-200'><Save size={16} />Update Password</button>
                             )}
+                        </div>
+                    </div>
+
+                </div>
+                <div className='w-full max-w-xl border border-neutral-300 rounded-lg shadow-sm bg-white overflow-hidden'>
+
+                    <div className='px-7 py-4 bg-red-100'>
+                        <h1 className='font-semibold text-red-500 flex items-center gap-1'><TriangleAlert size={16}/>Danger Zone</h1>
+                    </div>
+
+                    <div className='border-t border-red-300 bg-red-100'>
+                        <div className='px-7 py-3 bg-red-100 rounded-lg flex items-center justify-between'>
+                            <div className='flex flex-col items-start justify-start gap-1'>
+                                <h1 className='text-red-800 text-sm font-medium'>Delete your account</h1>
+                            <span className='text-xs text-red-500 tracking-tight'>Permanently delete your account and all saved links. This action cannot be undone</span>
+                            </div>
+                            <button onClick={handleDelete} className='w-30 text-red-500 font-medium hover:bg-red-200 cursor-pointer transition-colors duration-200 px-3 py-1 text-xs border border-red-300 rounded-lg '>Delete account</button>
                         </div>
                     </div>
 

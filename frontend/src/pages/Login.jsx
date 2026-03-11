@@ -2,12 +2,12 @@ import { User, Lock, Mail, Eye, EyeClosed, Loader2, TriangleAlert } from 'lucide
 import React, { useContext, useState } from 'react'
 import { login } from '../api/endpoint'
 import toast from 'react-hot-toast'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 
 const Login = () => {
     const navigate = useNavigate()
-    const {setIsLoggedIn} = useContext(AuthContext)
+    const { setIsLoggedIn } = useContext(AuthContext)
     const [seePass, setSeepass] = useState(false)
     const [loading, setLoading] = useState(false)
     const [formData, setFormdata] = useState({
@@ -15,6 +15,10 @@ const Login = () => {
         password: ''
 
     })
+    const [searchParams] = useSearchParams()
+
+    const addLink = searchParams.get("addLink")
+    const url = searchParams.get("url")
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -71,12 +75,32 @@ const Login = () => {
                     style: {
                         backgroundColor: '#ECFDF5',
                         color: '#065F46',
-                        border: '1px solid #A7F3D0',
                         fontSize: '14px',
                         fontWeight: '500',
-                        padding: '10px',
+                        padding: '10px 16px',
                         boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
                     },
+                    icon: (
+                        <div style={{
+                            backgroundColor: '#059669',
+                            borderRadius: '50%',
+                            width: '20px',
+                            height: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                        }}>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </div>
+                    ),
+                    duration: 3000,
                 })
                 setFormdata({
                     username: '',
@@ -84,16 +108,18 @@ const Login = () => {
 
                 })
                 setIsLoggedIn(true)
-                setTimeout(()=>{
-                    navigate('/dashboard')
+                setTimeout(() => {
+                    if (addLink && url) {
+                        navigate(`/dashboard?openModal=true&url=${encodeURIComponent(url)}`)
+                    } else {
+                        navigate('/dashboard')
+                    }
                 }, 2000)
             }
             else {
                 toast.error('Something went wrong')
             }
-            console.log(data)
         } catch (error) {
-            console.log(error.message)
             toast.error('Something went wrong')
             setLoading(false)
         } finally {

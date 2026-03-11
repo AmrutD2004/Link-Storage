@@ -86,3 +86,9 @@ export const updatePassword = async (payload) => {
     const response = await api.put(`api/update-password/`, payload,)
     return response.data
 }
+
+
+export const deleteAccount = async () => {
+    const response = await api.delete(`api/user-delete/`)
+    return response.data
+}

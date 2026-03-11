@@ -1,43 +1,43 @@
 import { Link, Loader2, Plus, X, XIcon } from 'lucide-react'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { CategoryContext } from '../../context/CategoryContext'
 import { createLink, fetchURLTitle } from '../../api/endpoint'
 import toast from 'react-hot-toast'
 
-const AddLinkModal = ({ onClose }) => {
+const AddLinkModal = ({ onClose, defaultURL }) => {
 
     const [tags, setTags] = useState([])
     const [loading, setLoading] = useState(false)
-    const{fetchCategories, categories, links, fetchLinks} = useContext(CategoryContext)
+    const { fetchCategories, categories, links, fetchLinks } = useContext(CategoryContext)
     const [noTitle, setNoTitle] = useState(false)
 
     const [linkTitle, setLinkTitle] = useState('')
     const [formData, setFormData] = useState({
-        category : '',
-        purpose : ''
+        category: '',
+        purpose: ''
     })
-    const [url, setUrl] = useState('')
-    const handleChange = (e)=>{
-        const {name, value} = e.target
-        setFormData(prev=> ({...prev, [name]:value}))
+    const [url, setUrl] = useState(defaultURL || '')
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setFormData(prev => ({ ...prev, [name]: value }))
     }
 
-    const handleURlChange = async(e)=>{
+    const handleURlChange = async (e) => {
         const value = e.target.value
         setUrl(value)
-        if (value.startsWith('http://') || value.startsWith('https://')){
-            try{
+        if (value.startsWith('http://') || value.startsWith('https://')) {
+            try {
                 const data = await fetchURLTitle(value)
-                if(data.success){
+                if (data.success) {
                     console.log(data)
-                    if(data.title == null){
+                    if (data.title == null) {
                         setNoTitle(true)
-                    }else{
+                    } else {
                         setLinkTitle(data.title)
                     }
-                    
+
                 }
-            }catch(error){
+            } catch (error) {
                 console.log(error)
             }
         }
@@ -58,49 +58,74 @@ const AddLinkModal = ({ onClose }) => {
     }
 
 
-    const handleSubmit = async(e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
+        try {
             setLoading(true)
             const payload = {
-                actual_link : url,
+                actual_link: url,
                 link_title: linkTitle,
-                link_purpose : formData.purpose || null,
-                link_tags : tags,
-                category : formData.category,
+                link_purpose: formData.purpose || null,
+                link_tags: tags,
+                category: formData.category,
             }
             const data = await createLink(payload)
-            if(data.success){
+            if (data.success) {
                 toast.success('Link Added Successfully', {
                     style: {
                         backgroundColor: '#ECFDF5',
                         color: '#065F46',
-                        border: '1px solid #A7F3D0',
                         fontSize: '14px',
                         fontWeight: '500',
-                        padding: '10px',
+                        padding: '10px 16px',
                         boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
                     },
+                    icon: (
+                        <div style={{
+                            backgroundColor: '#059669',
+                            borderRadius: '50%',
+                            width: '20px',
+                            height: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                        }}>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </div>
+                    ),
+                    duration: 3000,
                 })
                 setFormData({
-                    purpose : '',
-                    category : ''
+                    purpose: '',
+                    category: ''
                 })
                 setTags([])
                 setLinkTitle('')
                 setUrl('')
-                setTimeout(()=>{
+                setTimeout(() => {
                     fetchLinks()
                     onClose()
                 }, 2000)
             }
-        }catch(error){
+        } catch (error) {
             console.log(error)
             setLoading(false)
-        }finally{
+        } finally {
             setLoading(false)
         }
     }
+    useEffect(() => {
+        if (defaultURL) {
+            handleURlChange({ target: { value: defaultURL } })
+        }
+    }, [])
     return (
         <div className='fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs'>
             <div className='max-w-4xl mx-auto z-50'>
@@ -116,7 +141,7 @@ const AddLinkModal = ({ onClose }) => {
                     </div>
                     <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 relative'>
                         <label className="text-sm text-[#0B3A66] font-medium">Title</label>
-                        <input value={linkTitle} onChange={(e) => {setLinkTitle(e.target.value), setNoTitle(false) }} type="text" className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='Link Title' />
+                        <input value={linkTitle} onChange={(e) => { setLinkTitle(e.target.value), setNoTitle(false) }} type="text" className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='Link Title' />
                         {noTitle && <span className='absolute -bottom-5 left-2 text-xs text-red-500'>No title found</span>}
                     </div>
                     <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
@@ -140,8 +165,8 @@ const AddLinkModal = ({ onClose }) => {
                     <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
                         <label className="text-sm text-[#0B3A66] font-medium">Category</label>
                         <select onChange={handleChange} className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg' name="category" value={formData.category} >
-                            <option  className=''>Select a category</option>
-                            {categories.map((cat)=>(
+                            <option className=''>Select a category</option>
+                            {categories.map((cat) => (
                                 <option value={cat.id}>{cat.link_category}</option>
                             ))}
                         </select>
@@ -152,7 +177,7 @@ const AddLinkModal = ({ onClose }) => {
                         ) : (
                             <button className='bg-[#0B3A66] text-white flex items-center mt-4 px-3 py-1.5 text-sm gap-1 rounded-lg shadow hover:scale-102 transition-all duration-200 cursor-pointer'><Plus size={18} />Save Link</button>
                         )}
-                        
+
                     </div>
                 </form>
             </div>
