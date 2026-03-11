@@ -7,6 +7,10 @@ import { Toaster } from 'react-hot-toast'
 import Login from './pages/Login'
 import Categories from './pages/Categories'
 import AllLinks from './pages/AllLinks'
+import Protected from './Protected/Protected'
+import { CategoryContextProvider } from './context/CategoryContext'
+import LinkDetails from './pages/LinkDetails'
+import Profile from './pages/Profile'
 
 const App = () => {
   return (
@@ -15,11 +19,13 @@ const App = () => {
       />
       <Routes>
         <Route path='/' element={<LandingPage />} />
-        <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/categories' element={<Categories />} />
-        <Route path='/links' element={<AllLinks />} />
+        <Route path='/dashboard' element={<Protected><CategoryContextProvider><Dashboard /></CategoryContextProvider></Protected>} />
+        <Route path='/categories' element={<Protected><CategoryContextProvider><Categories /></CategoryContextProvider></Protected>} />
+        <Route path='/links' element={<Protected><AllLinks /></Protected>} />
+        <Route path='/link/:id' element={<Protected><CategoryContextProvider><LinkDetails /></CategoryContextProvider></Protected>} />
+        <Route path='/profile' element={<Protected><Profile /></Protected>} />
       </Routes>
     </Router>
   )

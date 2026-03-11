@@ -1,6 +1,8 @@
 from rest_framework.decorators import api_view, parser_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+import requests
+from bs4 import BeautifulSoup
 from rest_framework import status
 from .serializers import *
 from .models import *
@@ -44,7 +46,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             return Response({'success' : False, 'message' : 'Invalid Credentials'}, status=400)
 
 @api_view(['POST'])       
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def logout(request):
     try:
         res = Response()
@@ -69,9 +71,261 @@ def userRegister(request):
 @permission_classes([IsAuthenticated])
 def is_authenticated(request):
     user = request.user
+    avatar_url = user.user_avatar.url if user.user_avatar else None
     return Response({
         'success' : True,
         'username' : user.username,
         'email' : user.email,
+        'avatar' : avatar_url,
         'created_at' : user.created_at,
     })
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_category(request):
+    serializer = CategoryCreation(data = request.data)
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response({
+            'success': True,
+            'data': serializer.data
+        })
+    return Response({
+        'success': False,
+        'errors': serializer.errors
+    })
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_category(request):
+    categories = Category.objects.filter(user = request.user)
+    
+    serializer = GetUserCategory(categories, many=True)
+    return Response({
+            'success': True,
+            'data': serializer.data
+        })
+    
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_category(request, category_id):
+    try:
+        category = Category.objects.get(id=category_id, user=request.user)
+        category.delete()
+        return Response({
+                'success': True,
+                'message': 'Category Deleted'
+            })
+    except Category.DoesNotExist:
+        return Response({
+                'success': False,
+                'message': "Category Doesn't exists"
+            }, status = 404)
+    
+
+@api_view(['POST'])
+def fetch_link_title(request):
+    url = request.data.get('url')
+    
+    try:
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        title = soup.title.string if soup.title else "No title found"
+        
+        return Response({
+            "success" : True,
+            "title" : title
+        })
+    except Exception as e:
+        return Response({
+            "success": False,
+            "message": str(e)
+        })
+        
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_link(request):
+    serializer = LinkCreation(data = request.data)
+    if serializer.is_valid():
+        serializer.save(user = request.user)
+        return Response({
+            'success' : True,
+            'data' : serializer.data
+        })
+    return Response({
+        'success' : False,
+        'error' : serializer.errors
+    })
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_links(request):
+    links = linkData.objects.filter(user = request.user)
+    
+    serializer = GetUserLinksSerializer(links, many=True)
+    return Response({
+            'success': True,
+            'data': serializer.data
+        })
+        
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_link(request, link_id):
+    try:
+        link = linkData.objects.get(id=link_id, user=request.user)
+        link.delete()
+        return Response({
+                'success': True,
+                'message': 'Link Deleted'
+            })
+    except linkData.DoesNotExist:
+        return Response({
+                'success': False,
+                'message': "Link Doesn't exists"
+            }, status = 404)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_link(request, link_id):
+    link = linkData.objects.get(id=link_id, user=request.user)
+    serializer = GetUserLinksSerializer(link, many=False)
+    
+    return Response({
+            'success': True,
+            'data': serializer.data
+            })
+    
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def edit_link(request, link_id):
+    try:
+        link = linkData.objects.get(id=link_id, user=request.user)
+
+        serializer = EditLinkSerializer(link, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({
+                "success": True,
+                "message": "Link updated successfully",
+                "data": serializer.data
+            })
+
+        return Response({
+            "success": False,
+            "errors": serializer.errors
+        }, status=400)
+
+    except linkData.DoesNotExist:
+        return Response({
+            "success": False,
+            "message": "Link doesn't exist"
+        }, status=404)
+        
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_user(request):
+    try:
+        user = request.user
+
+        serializer = UpdateUserInfoSerializer(user, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({
+                "success": True,
+                "message": "Profile updated successfully",
+                "data": serializer.data
+            })
+
+        return Response({
+            "success": False,
+            "errors": serializer.errors
+        }, status=400)
+
+    except Users.DoesNotExist:
+        return Response({
+            "success": False,
+            "message": "User doesn't exist"
+        }, status=404)
+        
+        
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_user_avatar(request):
+    try:
+        user = request.user
+
+        serializer = UpdateUserAvatar(user, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({
+                "success": True,
+                "message": "Avatar updated successfully",
+                "data": serializer.data
+            })
+
+        return Response({
+            "success": False,
+            "errors": serializer.errors
+        }, status=400)
+
+    except Users.DoesNotExist:
+        return Response({
+            "success": False,
+            "message": "User doesn't exist"
+        }, status=404)
+        
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_password(request):
+    try:
+        serializer = UpdatePasswordSerializer(data = request.data, context = {'request' : request})
+
+
+        if serializer.is_valid():
+            user = request.user
+            user.set_password(serializer.validated_data['newPassword'])
+            user.save()
+
+            return Response({
+                "success": True,
+                "message": "Password updated successfully",
+            })
+
+        return Response({
+            "success": False,
+            "errors": serializer.errors
+        }, status=400)
+
+    except Users.DoesNotExist:
+        return Response({
+            "success": False,
+            "message": "User doesn't exist"
+        }, status=404)
+    
+    
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_user(request):
+    try:
+        user = request.user
+        user.delete()
+        res = Response()
+        res.delete_cookie('access_token', path='/', samesite='None')
+        res.delete_cookie('refresh_token', path='/', samesite='None')
+        return Response({
+            "success": True,
+            "message": "User account deleted successfully"
+        })
+    except Users.DoesNotExist:
+        return Response({
+            'success' : False,
+            "message" : 'User not exists'
+        })
+    

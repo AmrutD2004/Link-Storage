@@ -80,16 +80,36 @@ const SignUp = () => {
             const data = await userRegister(payload)
             if (data.success) {
                 toast.success('User Register Successfully', {
-                    style: {
-                        backgroundColor: '#ECFDF5',
-                        color: '#065F46',
-                        border: '1px solid #A7F3D0',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        padding: '10px',
-                        boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
-                    },
-                })
+    style: {
+        backgroundColor: '#ECFDF5',
+        color: '#065F46',
+        fontSize: '14px',
+        fontWeight: '500',
+        padding: '10px 16px',
+        boxShadow: '0 4px 16px rgba(16,185,129,0.12)',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+    },
+    icon: (
+        <div style={{
+            backgroundColor: '#059669',
+            borderRadius: '50%',
+            width: '20px',
+            height: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+        }}>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+        </div>
+    ),
+    duration: 3000,
+})
                 setFormdata({
                     username: '',
                     email: '',

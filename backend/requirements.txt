@@ -1,5 +1,6 @@
-﻿Django>=4.2
+Django>=4.2
 djangorestframework
+djangorestframework-simplejwt
 django-cors-headers
 gunicorn
 psycopg2-binary
