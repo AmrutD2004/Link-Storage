@@ -8,7 +8,7 @@ const Navbar = () => {
     const [menu, setMenu] = useState(false)
   return (
     
-    <div className='w-full fixed top-0 border border-[#E6EEF4]'>
+    <div className='w-full fixed top-0 border border-[#E6EEF4] z-50 bg-white/30 backdrop-blur-xl'>
         <div className='max-w-7xl mx-auto px-3 py-4'>
             <div className='flex items-center justify-between w-full'>
                 <Link className='text-[#0B3A66] text-2xl font-medium tracking-tight'>Curato</Link>

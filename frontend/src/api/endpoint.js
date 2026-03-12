@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'curatobackend.pythonanywhere.com/',
+    baseURL: 'https://curatobackend.pythonanywhere.com/',
     withCredentials: true
 })
 
