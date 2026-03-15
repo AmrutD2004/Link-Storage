@@ -56,14 +56,14 @@ const Links = ({ links, fetchLinks, categories }) => {
 
 
   return (
-    <div className='w-full px-7 py-3'>
-      <div className='flex items-center justify-start gap-2'>
-        <div className='w-full relative'>
+    <div className='w-full lg:px-7 py-3'>
+      <div className='flex flex-col lg:flex-row items-center justify-start gap-2'>
+        <div className='w-full relative z-0'>
           <span className='absolute top-2 ps-2 text-neutral-500'><Search size={16}/></span>
           <input type="text" onChange={(e) => handleSearch(e.target.value)} className='border w-full border-neutral-300 px-8 py-2 text-xs rounded-lg outline-none bg-white text-neutral-800 ' placeholder='Filter Links by Link Title, tags or Category'/>
         </div>
         <div className='w-full flex items-center justify-start gap-2'>
-          <select onChange={(e) => {handleCategorySearched(e.target.value), setCategory(e.target.value)}} className='border border-neutral-300 px-8 py-2 text-xs rounded-lg outline-none bg-white text-neutral-800 '>
+          <select onChange={(e) => {handleCategorySearched(e.target.value), setCategory(e.target.value)}} className='border border-neutral-300 px-8 py-2 text-xs rounded-lg outline-none bg-white text-neutral-800 w-full lg:w-54'>
             <option value="">All Categories</option>
           {categories.map((cat)=> (
             <option key={cat.id} value={cat.link_category}>{cat.link_category}</option>
@@ -90,11 +90,11 @@ const Links = ({ links, fetchLinks, categories }) => {
     </h1>
   </div>
 )}
-      <div className='grid grid-cols-1 lg:grid-cols-3 py-4 gap-4'>
+      <div className='grid grid-cols-1 lg:grid-cols-3 py-4 gap-4 '>
         {searchedLinks.map((link) => (
           <div
             key={link.id}
-            className='group w-full bg-white rounded-2xl border border-[#E6EEF4] shadow-sm hover:shadow-md hover:border-[#C8DDEF] hover:scale-102 transition-all duration-300 flex flex-col relative overflow-hidden cursor-pointer'
+            className='group w-full bg-white rounded-2xl border border-[#E6EEF4] shadow-sm hover:shadow-md hover:border-[#C8DDEF] hover:scale-102 transition-all duration-300 flex flex-col  overflow-hidden cursor-pointer z-0'
           >
             {/* Top section */}
             <div className='flex items-start justify-between px-5 pt-5 pb-3 gap-3'>

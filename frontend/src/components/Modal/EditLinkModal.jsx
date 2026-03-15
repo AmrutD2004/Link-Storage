@@ -123,61 +123,60 @@ const EditLinkModal = ({ onClose, link, linkId }) => {
         }
     }
     return (
-        <div className='fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs'>
-            <div className='max-w-4xl mx-auto z-50'>
-                <form onSubmit={handleSubmit} className='w-125 bg-white px-5 py-3 rounded-lg border border-neutral-300'>
-                    <div className='flex items-center justify-between w-full'>
-                        <h1 className='text-balance font-semibold text-[#0B3A66] tracking-tight'>Add new link</h1>
-                        <button type='button' onClick={onClose} className='p-1.5 rounded-lg bg-gray-100 hover:text-red-500 transition-colors cursor-pointer'><X size={18} /></button>
-                    </div>
-                    <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 relative'>
-                        <label className="text-sm text-[#0B3A66] font-medium">URL</label>
-                        <Link size={16} className='absolute top-8 left-2.5 text-neutral-500' />
-                        <input value={url} onChange={handleURlChange} type="text" className='w-full px-8 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='Paste a URL - title fetched automatically' />
-                    </div>
-                    <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 relative'>
-                        <label className="text-sm text-[#0B3A66] font-medium">Title</label>
-                        <input value={linkTitle} onChange={(e) => {setLinkTitle(e.target.value), setNoTitle(false) }} type="text" className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='Link Title' />
-                        {noTitle && <span className='absolute -bottom-5 left-2 text-xs text-red-500'>No title found</span>}
-                    </div>
-                    <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
-                        <label className="text-sm text-[#0B3A66] font-medium">Purpose / Note (optional)</label>
-                        <textarea name='purpose' onChange={handleChange} value={formData.purpose} type="text" className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='What is this link for? Why did you save it?' />
-                    </div>
-                    <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
-                        <label className="text-sm text-[#0B3A66] font-medium">Tags</label>
-                        <div className='w-full flex flex-wrap items-center outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800'>
-                            {tags.map((tag, index) => (
-                                <span key={index} className='m-2 px-3 py-1 bg-[#EBF2F8] border border-[#E6EEF4] rounded-full flex items-center gap-1'>{tag}<button onClick={() => removeTags(index)}><XIcon size={12} /></button></span>
-                            ))}
-                            <input
-                                type="text"
-                                onKeyDown={handlekeydown}
-                                className='flex-1 min-w-[120px] px-3 py-1.5 outline-[#0B3A66] text-sm rounded-lg text-neutral-800'
-                                placeholder='Add tag, press Enter...'
-                            />
-                        </div>
-                    </div>
-                    <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
-                        <label className="text-sm text-[#0B3A66] font-medium">Category</label>
-                        <select onChange={handleChange} className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg' name="category" value={formData.category} >
-                            <option  className=''>Select a category</option>
-                            {categories.map((cat)=>(
-                                <option key={cat.id} value={cat.id}>{cat.link_category}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className='flex items-end justify-end w-full my-5'>
-                        {loading ? (
-                            <button className='bg-[#0B3A66] text-white flex items-center mt-4 px-3 py-1.5 text-sm gap-1 rounded-lg shadow hover:scale-102 transition-all duration-200 cursor-pointer'><Loader2 className='animate-spin' size={18} />Saving changes...</button>
-                        ) : (
-                            <button className='bg-[#0B3A66] text-white flex items-center mt-4 px-3 py-1.5 text-sm gap-1 rounded-lg shadow hover:scale-102 transition-all duration-200 cursor-pointer'><Check size={18} />Save Changes</button>
-                        )}
-                        
-                    </div>
-                </form>
+        <div className='fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs z-50'>
+    <div className='max-w-4xl mx-auto z-50 w-[95%] lg:w-auto max-h-[90vh] lg:max-h-none'>
+        <form onSubmit={handleSubmit} className='lg:w-125 bg-white px-5 py-3 rounded-lg border border-neutral-300 overflow-y-auto max-h-[85vh] lg:max-h-none'>
+            <div className='flex items-center justify-between w-full'>
+                <h1 className='text-balance font-semibold text-[#0B3A66] tracking-tight'>Edit link</h1>
+                <button type='button' onClick={onClose} className='p-1.5 rounded-lg bg-gray-100 hover:text-red-500 transition-colors cursor-pointer flex-shrink-0'><X size={18} /></button>
             </div>
-        </div>
+            <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 relative'>
+                <label className="text-sm text-[#0B3A66] font-medium">URL</label>
+                <Link size={16} className='absolute top-8 left-2.5 text-neutral-500' />
+                <input value={url} onChange={handleURlChange} type="text" className='w-full px-8 py-1.5 outline-none text-xs lg:text-sm flex-wrap border border-neutral-300 rounded-lg text-neutral-800' placeholder='Paste a URL - title fetched automatically' />
+            </div>
+            <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 relative'>
+                <label className="text-sm text-[#0B3A66] font-medium">Title</label>
+                <input value={linkTitle} onChange={(e) => {setLinkTitle(e.target.value), setNoTitle(false) }} type="text" className='w-full px-3 py-1.5 outline-none text-xs lg:text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='Link Title' />
+                {noTitle && <span className='absolute -bottom-5 left-2 text-xs text-red-500'>No title found</span>}
+            </div>
+            <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
+                <label className="text-sm text-[#0B3A66] font-medium">Purpose / Note (optional)</label>
+                <textarea name='purpose' onChange={handleChange} value={formData.purpose} type="text" className='w-full px-3 py-1.5 outline-none text-xs lg:text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='What is this link for? Why did you save it?' />
+            </div>
+            <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
+                <label className="text-sm text-[#0B3A66] font-medium">Tags</label>
+                <div className='w-full flex flex-wrap items-center outline-none text-xs lg:text-sm border border-neutral-300 rounded-lg text-neutral-800'>
+                    {tags.map((tag, index) => (
+                        <span key={index} className='m-2 px-3 py-1 bg-[#EBF2F8] border border-[#E6EEF4] rounded-full flex items-center gap-1 '>{tag}<button type="button" onClick={() => removeTags(index)}><XIcon size={12} /></button></span>
+                    ))}
+                    <input
+                        type="text"
+                        onKeyDown={handlekeydown}
+                        className='flex-1 min-w-[120px] px-3 py-1.5 outline-[#0B3A66] text-xs lg:text-sm rounded-lg text-neutral-800'
+                        placeholder='Add tag, press Enter...'
+                    />
+                </div>
+            </div>
+            <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
+                <label className="text-sm text-[#0B3A66] font-medium">Category</label>
+                <select onChange={handleChange} className='w-full px-3 py-1.5 outline-none text-xs lg:text-sm border border-neutral-300 rounded-lg' name="category" value={formData.category} >
+                    <option className=''>Select a category</option>
+                    {categories.map((cat)=>(
+                        <option key={cat.id} value={cat.id}>{cat.link_category}</option>
+                    ))}
+                </select>
+            </div>
+            <div className='flex items-end justify-end w-full my-5'>
+                {loading ? (
+                    <button className='bg-[#0B3A66] text-white flex items-center mt-4 px-3 py-1.5 text-xs lg:text-sm gap-1 rounded-lg shadow hover:scale-102 transition-all duration-200 cursor-pointer'><Loader2 className='animate-spin' size={18} />Saving changes...</button>
+                ) : (
+                    <button className='bg-[#0B3A66] text-white flex items-center mt-4 px-3 py-1.5 text-xs lg:text-sm gap-1 rounded-lg shadow hover:scale-102 transition-all duration-200 cursor-pointer'><Check size={18} />Save Changes</button>
+                )}
+            </div>
+        </form>
+    </div>
+</div>
     )
 }
 

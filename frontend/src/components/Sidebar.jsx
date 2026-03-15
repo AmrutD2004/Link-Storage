@@ -18,7 +18,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-64 border-r min-h-screen border-neutral-200 bg-white flex flex-col space-y-5">
+    <aside className=" hidden lg:w-64 border-r min-h-screen border-neutral-200 bg-white lg:flex flex-col space-y-5">
 
       {/* Top Section */}
       <div>
