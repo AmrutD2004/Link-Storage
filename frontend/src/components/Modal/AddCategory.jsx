@@ -77,9 +77,9 @@ const AddCategory = ({ onClose }) => {
     }
 
     return (
-        <div className='fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs'>
+        <div className='fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs z-50'>
             <div className='max-w-4xl mx-auto z-50'>
-                <form onSubmit={handleSubmit} className='w-125 bg-white px-5 py-3 rounded-lg border border-neutral-300'>
+                <form onSubmit={handleSubmit} className='w-75 lg:w-125 bg-white px-5 py-3 rounded-lg border border-neutral-300'>
                     <div className='flex items-center justify-between w-full'>
                         <h1 className='text-balance font-semibold text-[#0B3A66] tracking-tight'>New category</h1>
                         <button onClick={onClose} on className='p-1.5 rounded-lg bg-gray-100 hover:text-red-500 transition-colors cursor-pointer'><X size={18} /></button>
@@ -94,7 +94,7 @@ const AddCategory = ({ onClose }) => {
                             {colors.map((code, idx) => (
                                 <div onClick={() => setColorCode(code)}
                                     key={idx}
-                                    className={`w-8 h-8 rounded-lg cursor-pointer flex items-center justify-center 
+                                    className={`w-6 h-6 lg:w-8 lg:h-8 rounded-lg cursor-pointer flex items-center justify-center 
         ${colorCode === code ? "border-2 border-[#0B3A66]" : "border border-transparent"}`}
                                     style={{ backgroundColor: code }}
                                 />
@@ -105,7 +105,7 @@ const AddCategory = ({ onClose }) => {
                         {loading ? (
                             <button className='bg-[#0B3A66] text-white flex items-center mt-4 px-3 py-1.5 text-sm gap-1 rounded-lg shadow hover:scale-102 transition-all duration-200 cursor-pointer '><Loader2 className='animate-spin' size={18} />Adding Category...</button>
                         ) : (
-                            <button className='bg-[#0B3A66] text-white flex items-center mt-4 px-3 py-1.5 text-sm gap-1 rounded-lg shadow hover:scale-102 transition-all duration-200 cursor-pointer'><Plus size={18} />Add Category</button>
+                            <button className='bg-[#0B3A66] text-white flex items-center mt-4 px-3 py-1.5 text-xs lg:text-sm gap-1 rounded-lg shadow hover:scale-102 transition-all duration-200 cursor-pointer'><Plus size={18} />Add Category</button>
                         )}
                         
                     </div>

@@ -25,11 +25,11 @@ const Navbar = () => {
                 </button>      
             </div>
             {menu && (
-                <div className='w-full flex flex-col items-center justify-center gap-3 fixed top-15 bg-[#232a41] mx-4 px-5 -left-4 right-0 py-5'>
-                    <button className='px-3 py-1 text-balance font-medium text-[#fffff9] tracking-tighter rounded-sm cursor-pointer hover:shadow-xs shadow-[#fffff9] transition-all duration-300 w-full '>
+                <div className='lg:hidden w-full flex flex-col items-center justify-center gap-3 fixed top-15 bg-white mx-4 px-5 -left-4 right-0 py-5'>
+                    <button onClick={()=> navigate('/login')} className='px-3 py-1 text-balance font-medium text-[#0B3A66] tracking-tighter rounded-sm cursor-pointer hover:shadow-xs shadow-[#fffff9] transition-all duration-300 w-full '>
                         Log In
                     </button>
-                    <button className='px-3 py-1 bg-[#0B3A66] text-balance font-medium tracking-tighter rounded-sm cursor-pointer hover:shadow-xs shadow-[#fffff9] transition-all duration-300 hover:scale-102 w-full '>
+                    <button onClick={()=> navigate('/signup')} className='px-3 py-1 bg-[#0B3A66] text-white text-balance font-medium tracking-tighter rounded-sm cursor-pointer hover:shadow-xs shadow-[#fffff9] transition-all duration-300 hover:scale-102 w-full '>
                         Get started free
                     </button>
                 </div>

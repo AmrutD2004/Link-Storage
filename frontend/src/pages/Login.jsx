@@ -129,7 +129,7 @@ const Login = () => {
     return (
         <div className='max-w-7xl mx-auto'>
             <div className='flex items-center justify-center min-h-screen'>
-                <div className='w-110 px-5 py-6 shadow-xl rounded-lg'>
+                <div className='w-110 px-5 py-6 shadow-xl rounded-lg mx-3 lg:mx-0'>
                     <form onSubmit={handleSubmit} className='flex flex-col items-center justify-between h-full'>
                         <div className='flex items-center justify-center w-full my-4 '>
                             <h1 className='text-2xl font-semibold text-[#0B3A66]'>Curato</h1>
