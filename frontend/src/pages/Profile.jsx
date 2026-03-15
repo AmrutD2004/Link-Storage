@@ -255,7 +255,7 @@ const Profile = () => {
 
                     <div className='border-t border-neutral-300 bg-white'>
                         <div className='mx-7 my-3 bg-gray-100 rounded-lg'>
-                            <div className='flex gap-3 px-5 py-3 items-center'>
+                            <div className='flex flex-col lg:flex-row gap-3 px-5 py-3 items-center'>
 
                                 <div className="w-16 h-16 rounded-full overflow-hidden">
                                     <img
@@ -266,11 +266,11 @@ const Profile = () => {
                                 </div>
 
                                 <div className='leading-tight flex flex-col gap-1 py-3'>
-                                    <div>
+                                    <div className='text-center lg:text-start'>
                                         <h1 className='font-medium text-sm'>{userData?.username}</h1>
                                         <span className='text-xs text-neutral-500'>{userData?.email}</span>
                                     </div>
-                                    <label className='bg-white flex items-center w-30 justify-center px-3 py-1 text-xs font-medium rounded-lg hover:bg-[#EBF5FF] transition-colors duration-200 cursor-pointer border border-neutral-300 hover:border-[#C8DDEF] hover:text-[#0B3A66]'><input type="file" className="hidden" name='user_avatar' onChange={handleImageChange} />Change Avatar</label>
+                                    <label className='bg-white flex items-center lg:w-30 justify-center px-3 py-1 text-xs font-medium rounded-lg hover:bg-[#EBF5FF] transition-colors duration-200 cursor-pointer border border-neutral-300 hover:border-[#C8DDEF] hover:text-[#0B3A66]'><input type="file" className="hidden" name='user_avatar' onChange={handleImageChange} />Change Avatar</label>
                                 </div>
 
                             </div>
@@ -280,11 +280,11 @@ const Profile = () => {
                     <div className='flex flex-col items-start px-5 py-3 bg-white gap-2'>
                         <div className='flex flex-col items-start w-full gap-2'>
                             <label className='text-sm font-medium'>Username</label>
-                            <input type="text" className='w-full border border-neutral-300 rounded-lg outline-none text-sm px-3 py-1 text-neutral-800' name='username' onChange={handleChange} value={formData.username} />
+                            <input type="text" className='w-full border border-neutral-300 rounded-lg outline-none text-xs lg:text-sm px-3 py-1 text-neutral-800' name='username' onChange={handleChange} value={formData.username} />
                         </div>
                         <div className='flex flex-col items-start w-full gap-2'>
                             <label className='text-sm font-medium'>Email</label>
-                            <input type="text" className='w-full border border-neutral-300 rounded-lg outline-none text-sm px-3 py-1 text-neutral-800' name='email' onChange={handleChange} value={formData.email} />
+                            <input type="text" className='w-full border border-neutral-300 rounded-lg outline-none text-xs lg:text-sm px-3 py-1 text-neutral-800' name='email' onChange={handleChange} value={formData.email} />
                         </div>
                         <div className='w-full flex items-center justify-end mt-3'>
                             {loading ? (
@@ -306,15 +306,15 @@ const Profile = () => {
                     <div className='flex flex-col items-start px-5 py-3 bg-white gap-2'>
                         <div className='flex flex-col items-start w-full gap-2'>
                             <label className='text-sm font-medium'>Current Password</label>
-                            <input type="password" className='w-full border border-neutral-300 rounded-lg outline-none text-sm px-3 py-1 text-neutral-800' name='oldPassword' onChange={handlePassword} value={password.oldPassword} placeholder='Current password' />
+                            <input type="password" className='w-full border border-neutral-300 rounded-lg outline-none text-xs lg:text-sm px-3 py-1 text-neutral-800' name='oldPassword' onChange={handlePassword} value={password.oldPassword} placeholder='Current password' />
                         </div>
                         <div className='flex flex-col items-start w-full gap-2'>
                             <label className='text-sm font-medium'>New Password</label>
-                            <input type="password" className={`w-full border ${notMatch ? 'border-red-500' : 'border-neutral-300'}  rounded-lg outline-none text-sm px-3 py-1 text-neutral-800`} name='newPassword' onChange={handlePassword} value={password.newPassword} placeholder='New password' />
+                            <input type="password" className={`w-full border ${notMatch ? 'border-red-500' : 'border-neutral-300'}  rounded-lg outline-none text-xs lg:text-sm px-3 py-1 text-neutral-800`} name='newPassword' onChange={handlePassword} value={password.newPassword} placeholder='New password' />
                         </div>
                         <div className='flex flex-col items-start w-full gap-2 relative'>
                             <label className='text-sm font-medium'>Confirm Password</label>
-                            <input type="password" className={`w-full border ${notMatch ? 'border-red-500' : 'border-neutral-300'}  rounded-lg outline-none text-sm px-3 py-1 text-neutral-800`} name='confirmPassword' onChange={handlePassword} value={password.confirmPassword} placeholder='Confirm password' />
+                            <input type="password" className={`w-full border ${notMatch ? 'border-red-500' : 'border-neutral-300'}  rounded-lg outline-none text-xs lg:text-sm px-3 py-1 text-neutral-800`} name='confirmPassword' onChange={handlePassword} value={password.confirmPassword} placeholder='Confirm password' />
                             {notMatch && <span className='text-xs text-red-500 absolute -bottom-5'>New password and confirm password do not match.</span>}
                         </div>
                         <div className='w-full flex items-center justify-end mt-3'>
@@ -334,12 +334,12 @@ const Profile = () => {
                     </div>
 
                     <div className='border-t border-red-300 bg-red-100'>
-                        <div className='px-7 py-3 bg-red-100 rounded-lg flex items-center justify-between'>
+                        <div className='px-7 py-3 bg-red-100 rounded-lg flex flex-col lg:flex-row gap-3 items-center justify-between'>
                             <div className='flex flex-col items-start justify-start gap-1'>
                                 <h1 className='text-red-800 text-sm font-medium'>Delete your account</h1>
                             <span className='text-xs text-red-500 tracking-tight'>Permanently delete your account and all saved links. This action cannot be undone</span>
                             </div>
-                            <button onClick={handleDelete} className='w-30 text-red-500 font-medium hover:bg-red-200 cursor-pointer transition-colors duration-200 px-3 py-1 text-xs border border-red-300 rounded-lg '>Delete account</button>
+                            <button onClick={handleDelete} className='w-full lg:w-30 text-red-500 font-medium hover:bg-red-200 cursor-pointer transition-colors duration-200 px-3 py-1 text-xs border border-red-300 rounded-lg '>Delete account</button>
                         </div>
                     </div>
 

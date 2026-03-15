@@ -1,4 +1,4 @@
-import { Search, Bell, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, Bell, ChevronDown, ChevronUp, Menu, LayoutDashboard, List, Settings } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -55,6 +55,16 @@ const InappNavbar = () => {
       }, 2000)
     }
   }
+  const [open, setOpen] = useState(false)
+  const menu = [
+    { title: "Dashboard", icon: <LayoutDashboard size={18} />, path: "/dashboard" },
+    // { title: "All Links", icon: <LinkIcon size={18} />, path: "/links" },
+    { title: "Categories", icon: <List size={18} />, path: "/categories" },
+  ];
+
+  const accountMenu = [
+    { title: "Settings", icon: <Settings size={18} />, path: "/profile" },
+  ];
   if (loading) {
     return (
       <div className='max-w-7xl mx-auto'>
@@ -65,8 +75,8 @@ const InappNavbar = () => {
     )
   }
   return (
-    <nav className="sticky top-0 h-16 border-b border-neutral-200 bg-white/70 backdrop-blur-md flex items-center px-6">
-      <div className="flex items-center justify-between mx-4 w-full">
+    <nav className="sticky top-0 h-16 border-b border-neutral-200 bg-white/70 backdrop-blur-md flex items-center px-6 z-0">
+      <div className="hidden lg:flex items-center justify-between mx-4 w-full">
         <div className="relative w-80">
           <Search
             size={16}
@@ -120,6 +130,66 @@ const InappNavbar = () => {
           </div>
         </div>
       </div>
+      <button onClick={() => setOpen(!open)} className="lg:hidden p-2 bg-gray-100 rounded-lg"><Menu size={16} /></button>
+      {open && (
+        <div className="lg:hidden w-54 bg-white h-screen left-0 top-16 fixed flex flex-col z-50 shadow-xl">
+          <div className="flex flex-col gap-3 mt-5">
+            <span className="px-6 uppercase text-xs text-neutral-400 tracking-wider">
+              Menu
+            </span>
+
+            <div className="flex flex-col w-full">
+              {menu.map((item, idx) => {
+                const isActive = location.pathname === item.path;
+
+                return (
+                  <Link
+                    key={idx}
+                    to={item.path}
+                    className={`flex items-center gap-3 px-6 py-2 text-sm transition-all
+                            ${isActive
+                        ? "bg-[#EBF5FF] text-[#0B3A66] font-medium"
+                        : "text-neutral-600 hover:bg-[#F5F9FF]"
+                      }`}
+                  >
+                    {item.icon}
+                    <span>{item.title}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+          <div className="flex flex-col gap-3 pb-6 mt-5">
+                  <span className="px-6 uppercase text-xs text-neutral-400 tracking-wider">
+                    Account
+                  </span>
+          
+                  {accountMenu.map((item, idx) => {
+                    const isActive = location.pathname === item.path;
+          
+                    return (
+                      <Link
+                        key={idx}
+                        to={item.path}
+                        className={`flex items-center gap-3 px-6 py-2 text-sm transition-all
+                        ${isActive
+                            ? "bg-[#EBF5FF] text-[#0B3A66] font-medium"
+                            : "text-neutral-600 hover:bg-[#F5F9FF]"
+                          }`}
+                      >
+                        {item.icon}
+                        <span>{item.title}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+                <div className="border-t w-full border-neutral-300 flex items-center justify-center">
+                  <button onClick={handleLogout} className='px-3 py-1 border border-red-300 rounded-lg w-full mt-10 mx-3 text-red-500 cursor-pointer hover:bg-red-50 transition-colors duration-300 font-medium'>Logout</button>
+                </div>
+        </div>
+      )}
+
+
     </nav>
   );
 };

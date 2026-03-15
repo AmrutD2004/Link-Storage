@@ -9,7 +9,9 @@ const Layout = ({ children }) => {
                 <Sidebar />
             </div>
             <div className='flex flex-col flex-1 overflow-hidden'>
-                <InappNavbar />
+                <div className='z-50'>
+                    <InappNavbar />
+                </div>
                 <main className="flex-1 overflow-y-auto px-6 py-4 bg-gray-100">
                     {children}
                 </main>

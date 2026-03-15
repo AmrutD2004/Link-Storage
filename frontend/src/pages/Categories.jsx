@@ -64,16 +64,16 @@ const Categories = () => {
         <>
             <Layout>
                 <div className='max-w-7xl mx-auto'>
-                    <div className='flex items-center justify-between me-2 w-full'>
-                        <div className='flex flex-col items-start justify-start w-full gap-1 leading-tight px-5 py-3'>
+                    <div className='flex flex-col items-start lg:flex-row lg:items-center justify-between me-2 w-full'>
+                        <div className='flex flex-col items-start justify-start w-full gap-1 leading-tight lg:px-5 py-3'>
                             <h1 className='text-2xl font-bold text-[#0B3A66] tracking-tight'>Categories</h1>
                             <p className='text-sm text-neutral-500'>{categories.length} categories</p>
                         </div>
-                        <div className='w-full flex justify-end'>
+                        <div className='w-full flex lg:justify-end'>
                             <button onClick={() => setOpenmodal(true)} className='px-3 py-2 text-sm  bg-[#0B3A66] text-white font-medium rounded-lg shadow-sm cursor-pointer hover:scale-102 transition-all duration-200 flex items-center gap-1'><Plus size={18} />New Category</button>
                         </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-5">
                         {categories.map(cat => (
                             <div key={cat.id}
                                 className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-all">
