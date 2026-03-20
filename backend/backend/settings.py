@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     'rest_framework_simplejwt',
+    'django_rest_passwordreset',
     "links",
 ]
 
@@ -149,3 +150,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "smtp-relay.brevo.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = "9e55fc001@smtp-brevo.com"
+EMAIL_HOST_PASSWORD = "xsmtpsib-13b3a74b27fb2a381efc4a9286c0d15324d45badfff19e60eaf6e95edcbe297b-NHALD2ptW6RlHjIt"
+
+DEFAULT_FROM_EMAIL = "marrisingh81@gmail.com"

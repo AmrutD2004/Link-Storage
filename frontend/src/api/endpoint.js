@@ -83,7 +83,7 @@ export const updateAvatar = async (payload) => {
 }
 
 export const updatePassword = async (payload) => {
-    const response = await api.put(`api/update-password/`, payload,)
+    const response = await api.put(`api/update-password/`, payload)
     return response.data
 }
 
@@ -92,3 +92,20 @@ export const deleteAccount = async () => {
     const response = await api.delete(`api/user-delete/`)
     return response.data
 }
+
+export const forgotPassword = async (email) => {
+    const respose = await api.post('api/password_reset/', {
+        email:email
+    })
+    return respose.data
+}
+
+export const resetPassword = async (payload) => {
+    try{
+        const respose = await api.post("api/password_reset/confirm/", payload);
+    return respose.data
+    }catch(error){
+        // console.log(error.response?.data || error.message);
+    }
+}
+

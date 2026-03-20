@@ -11,6 +11,8 @@ import Protected from './Protected/Protected'
 import { CategoryContextProvider } from './context/CategoryContext'
 import LinkDetails from './pages/LinkDetails'
 import Profile from './pages/Profile'
+import Forgotpassword from './components/Forgotpassword'
+import ResetPassword from './components/ResetPassword'
 
 const App = () => {
   return (
@@ -26,6 +28,8 @@ const App = () => {
         <Route path='/links' element={<Protected><AllLinks /></Protected>} />
         <Route path='/link/:id' element={<Protected><CategoryContextProvider><LinkDetails /></CategoryContextProvider></Protected>} />
         <Route path='/profile' element={<Protected><Profile /></Protected>} />
+        <Route path='/forgotpassword' element={<Forgotpassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Routes>
     </Router>
   )
