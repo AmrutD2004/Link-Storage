@@ -2,7 +2,7 @@ import { User, Lock, Mail, Eye, EyeClosed, Loader2, TriangleAlert } from 'lucide
 import React, { useContext, useState } from 'react'
 import { login } from '../api/endpoint'
 import toast from 'react-hot-toast'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, Links, useNavigate, useSearchParams } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 
 const Login = () => {
@@ -149,6 +149,9 @@ const Login = () => {
                                     <button type='button' onClick={() => setSeepass(!seePass)}><EyeClosed size={16} className='absolute top-10 right-3 text-neutral-300' /></button>
                                 )}
                                 <input onChange={handleChange} className='w-full border border-neutral-300 rounded-lg px-10 py-1.5 text-sm placeholder:text-neutral-400 outline-none' type={`${!seePass ? 'password' : 'text'}`} name='password' value={formData.password} placeholder='password' />
+                            </div>
+                            <div className='w-full flex items-end justify-end'>
+                                <button type='button' onClick={() => navigate('/forgotpassword')} className='text-sm text-blue-600 font-medium cursor-pointer'>Forgot password ?</button>
                             </div>
                         </div>
                         <div className='flex items-center justify-center w-full px-5 py-3'>
