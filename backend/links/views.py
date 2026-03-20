@@ -10,6 +10,12 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.dispatch import receiver
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+from django_rest_passwordreset.signals import reset_password_token_created
+
 
 # Create your views here.
 
@@ -329,3 +335,41 @@ def delete_user(request):
             "message" : 'User not exists'
         })
     
+
+from django.dispatch import receiver
+from django.core.mail import send_mail
+from django.conf import settings
+from django_rest_passwordreset.signals import reset_password_token_created
+
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+
+    try:
+        reset_password_url = f"http://localhost:5173/reset-password/{reset_password_token.key}"
+
+        message = f"""
+        Hello {reset_password_token.user.username},
+
+        You requested to reset your password.
+
+        Use the link below to reset your password:
+
+        {reset_password_url}
+
+        If you did not request this, please ignore this email.
+        """
+
+        send_mail(
+                subject="Reset Your Password",
+                message=message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[reset_password_token.user.email],
+                fail_silently=False
+            )
+    
+    except Exception as e:
+        return Response({
+            "success": False,
+            "message": str(e)
+        })
