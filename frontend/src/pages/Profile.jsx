@@ -10,6 +10,7 @@ const Profile = () => {
     const { userData, fetchData, isLoggedIn } = useContext(AuthContext)
     const basUrl = import.meta.env.VITE_BASE_URL
     const [loading, setLoading] = useState(false)
+    const [avatarLoading, setAvatarLoading] = useState(false)
     const [updatePassloading, setUpdatePassLoading] = useState(false)
     const [formData, setFormData] = useState({
         username: userData?.username || '',
@@ -36,6 +37,7 @@ const Profile = () => {
         if (!file) return
         const data = new FormData()
         data.append('user_avatar', file)
+        setAvatarLoading(true)
         const res = await updateAvatar(data)
         try {
             if (res.success) {
@@ -75,6 +77,9 @@ const Profile = () => {
 
         } catch (error) {
             console.log(error?.res?.data)
+            setAvatarLoading(false)
+        }finally{
+            setAvatarLoading(false)
         }
     }
 
@@ -270,7 +275,7 @@ const Profile = () => {
                                         <h1 className='font-medium text-sm'>{userData?.username}</h1>
                                         <span className='text-xs text-neutral-500'>{userData?.email}</span>
                                     </div>
-                                    <label className='bg-white flex items-center lg:w-30 justify-center px-3 py-1 text-xs font-medium rounded-lg hover:bg-[#EBF5FF] transition-colors duration-200 cursor-pointer border border-neutral-300 hover:border-[#C8DDEF] hover:text-[#0B3A66]'><input type="file" className="hidden" name='user_avatar' onChange={handleImageChange} />Change Avatar</label>
+                                    <label className='bg-white flex items-center lg:w-30 justify-center px-3 py-1 text-xs font-medium rounded-lg hover:bg-[#EBF5FF] transition-colors duration-200 cursor-pointer border border-neutral-300 hover:border-[#C8DDEF] hover:text-[#0B3A66]'><input type="file" className="hidden" name='user_avatar' onChange={handleImageChange} />{avatarLoading ? 'Changing please wait...' : 'Change Avatar'}</label>
                                 </div>
 
                             </div>
