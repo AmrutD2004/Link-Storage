@@ -10,7 +10,7 @@ const Links = ({ links, fetchLinks, categories }) => {
   const [loading, setLoading] = useState(false)
   const [searchedLinks, setSearchedLink] = useState([])
   const [category, setCategory] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(0)
 
   const handleDelete = async (id, link_title) => {
     if (window.confirm(`Are you really want to delete ${link_title}?`)) {
@@ -73,6 +73,16 @@ const Links = ({ links, fetchLinks, categories }) => {
   };
   const visibleNumber = [...Array(noOfPages).keys()].slice(Math.max(0, currentPage - 1), Math.min(noOfPages, currentPage + 2))
 
+  if(links.length === 0){
+    return (
+      <div className='max-w-7xl mx-auto'>
+        <div className='flex min-h-screen items-center justify-center'>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0B3A66]"></div>
+        <span className="ml-2 text-sm text-neutral-500">Please wait...</span>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className='w-full lg:px-7 py-3'>
       <div className='flex flex-col lg:flex-row items-center justify-start gap-2'>
@@ -205,7 +215,7 @@ const Links = ({ links, fetchLinks, categories }) => {
           </div>
         ))}
       </div>
-      <div className="lg:fixed bottom-6 sm:bottom-10 lg:-right-40 w-full flex items-center justify-center px-2 sm:px-0">
+      <div className="w-full flex items-center justify-center px-2 mt-10">
         <button disabled={currentPage === 0} onClick={() => goToPrevPage()} className={`border px-2 py-1 rounded-lg border-neutral-300 text-neutral-600 me-2  text-xs flex items-center gap-1 ${currentPage === 0 ? 'cursor-not-allowed' : 'cursor-pointer hover:text-neutral-700 hover:font-medium hover:border-black transition-all duration-300 hover:bg-gray-200'}`}><ArrowLeft size={16} />Prev</button>
         {visibleNumber.map((n) =>
         (

@@ -148,7 +148,7 @@ const AddLinkModal = ({ onClose, defaultURL }) => {
                 <label className="text-sm text-[#0B3A66] font-medium">Purpose / Note (optional)</label>
                 <textarea name='purpose' onChange={handleChange} value={formData.purpose} type="text" className='w-full px-3 py-1.5 outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800' placeholder='What is this link for? Why did you save it?' />
             </div>
-            <div className='flex flex-col items-start justify-start gap-1 w-full mt-6 '>
+            <div className=' hidden lg:flex flex-col items-start justify-start gap-1 w-full mt-6 '>
                 <label className="text-sm text-[#0B3A66] font-medium">Tags</label>
                 <div className='w-full flex flex-wrap items-center outline-none text-sm border border-neutral-300 rounded-lg text-neutral-800'>
                     {tags.map((tag, index) => (
