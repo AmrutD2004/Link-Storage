@@ -73,7 +73,7 @@ const Links = ({ links, fetchLinks, categories }) => {
   };
   const visibleNumber = [...Array(noOfPages).keys()].slice(Math.max(0, currentPage - 1), Math.min(noOfPages, currentPage + 2))
 
-  if(links.length === 0){
+  if(!links){
     return (
       <div className='max-w-7xl mx-auto'>
         <div className='flex min-h-screen items-center justify-center'>
